@@ -1,5 +1,5 @@
 import axios from "axios"
-const Card = (article,selector) => {
+const Card = (article) => {
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -18,11 +18,13 @@ const Card = (article,selector) => {
   //   </div>
   // </div>
   //
-console.log(article)
-
- 
   
-  article.forEach(art=> {
+// for (let keys in article) {
+//   let key = article[keys];
+//   console.log(key)
+//   for (let i in key) {
+//     console.log(key[i]);
+//     const {...obj} = key[i];
     const card = document.createElement('div');
     const author = document.createElement('div');
     const imgContainer = document.createElement('div');
@@ -35,20 +37,19 @@ console.log(article)
     author.appendChild(byAuthorName); 
     card.appendChild(author);
     author.appendChild(imgContainer);
-    const select = document.querySelector(selector)
-    select.appendChild(card);
+
 
     card.classList.add('card');
     author.classList.add('author');
     imgContainer.classList.add('img-container');
     headline1.classList.add('headline');
 
-    authorPhoto1.src = art.authorPhoto
-    headline1.textContent = art.headline
-    byAuthorName.textContent = `By ${art.authorName}`
+    authorPhoto1.src = article.authorPhoto
+    headline1.textContent = article.headline
+    byAuthorName.textContent = `By ${article.authorName}`
 
-    return select;
-  }) 
+    return card;
+
 
 }
 
@@ -64,11 +65,19 @@ const cardAppender = (selector) => {
 
   axios.get('http://localhost:5001/api/articles')
   .then(res=> {
-     Card(res.data.articles.bootstrap,selector)
-     Card(res.data.articles.javascript,selector)
-     Card(res.data.articles.technology,selector);
-     Card(res.data.articles.jquery,selector);
-     Card(res.data.articles.node,selector)
+    const article = res.data.articles;
+    for (let keys in article) {
+      let key = article[keys];
+      for (let i in key) {
+        let {...obj} = key[i];
+        document.querySelector(selector).appendChild(Card(obj));
+      }
+    }
+    //  Card(res.data.articles.bootstrap,selector)
+    //  Card(res.data.articles.javascript,selector)
+    //  Card(res.data.articles.technology,selector);
+    //  Card(res.data.articles.jquery,selector);
+    //  Card(res.data.articles.node,selector)
       }
   )
   .catch(err=> {
