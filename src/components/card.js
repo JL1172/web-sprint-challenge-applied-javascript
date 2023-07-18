@@ -1,4 +1,5 @@
-const Card = (article) => {
+import axios from "axios"
+const Card = (article,selector) => {
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,6 +18,38 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+console.log(article)
+
+ 
+  
+  article.forEach(art=> {
+    const card = document.createElement('div');
+    const author = document.createElement('div');
+    const imgContainer = document.createElement('div');
+    const headline1 = document.createElement('div');
+    const authorPhoto1 = document.createElement('img');
+    const byAuthorName = document.createElement('span');
+
+    card.appendChild(headline1);
+    imgContainer.appendChild(authorPhoto1);
+    author.appendChild(byAuthorName); 
+    card.appendChild(author);
+    author.appendChild(imgContainer);
+    const select = document.querySelector(selector)
+    select.appendChild(card);
+
+    card.classList.add('card');
+    author.classList.add('author');
+    imgContainer.classList.add('img-container');
+    headline1.classList.add('headline');
+
+    authorPhoto1.src = art.authorPhoto
+    headline1.textContent = art.headline
+    byAuthorName.textContent = `By ${art.authorName}`
+
+    return select;
+  }) 
+
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +61,19 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+
+  axios.get('http://localhost:5001/api/articles')
+  .then(res=> {
+     Card(res.data.articles.bootstrap,selector)
+     Card(res.data.articles.javascript,selector)
+     Card(res.data.articles.technology,selector);
+     Card(res.data.articles.jquery,selector);
+     Card(res.data.articles.node,selector)
+      }
+  )
+  .catch(err=> {
+    console.error(err)
+  })
 }
 
 export { Card, cardAppender }
