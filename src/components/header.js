@@ -11,6 +11,24 @@ const Header = (title, date, temp) => {
   //    <span class="temp">{ temp }</span>
   //  </div>
   //
+  const header = document.createElement('div');
+  const dateOfHeader = document.createElement('span');
+  const titleOfHeader = document.createElement('h3');
+  const temperature =document.createElement('span');
+
+  header.appendChild(dateOfHeader);
+  header.appendChild(titleOfHeader);
+  header.appendChild(temperature);
+
+  header.classList.add('header');
+  dateOfHeader.classList.add('date');
+  temperature.classList.add('temp');
+
+  dateOfHeader.textContent = date;
+  titleOfHeader.textContent = title;
+  temperature.textContent = temp; 
+
+  return header;
 }
 
 const headerAppender = (selector) => {
@@ -26,6 +44,8 @@ const headerAppender = (selector) => {
   // We are taking care of passing in the correct selector on line 16,
   // so all that you need to do is pass it into the querySelector method
   // for the tests to work!
+  const thisOne = document.querySelector(selector);
+  return thisOne.appendChild(Header())
 }
 
 export { Header, headerAppender }
